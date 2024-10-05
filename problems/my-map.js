@@ -4,6 +4,7 @@ function myMap(inputArray, callback) {
   for(let i = 0; i < inputArray.length; i++){
     output = [...output, callback(inputArray[i])];
   }
+  // output = inputArray.map((ele) => callback(ele));
   
   return output;
 }
