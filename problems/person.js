@@ -26,6 +26,14 @@ class Person {
       throw new TypeError('name AND age please...');
     }
   }
+  tryUpdate(obj){
+    try{
+      this.update(obj);
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
 }
 
 module.exports = Person;

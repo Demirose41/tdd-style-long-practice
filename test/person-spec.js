@@ -1,5 +1,7 @@
 const chai = require("chai");
 const expect = chai.expect;
+const spies = require("chai-spies");
+chai.use(spies);
 
 const Person = require("../problems/person");
 
@@ -7,6 +9,8 @@ const Person = require("../problems/person");
 describe('Person Class', function () {
 
     let bill;
+    const newWho = {name: "Tifa", cupsize: "G"};
+    const newYou = {name: "Lulu", age: 28};
     beforeEach(function () {
         bill = new Person("Bill", 69);
         garth = new Person("Garth", 26);
@@ -46,16 +50,31 @@ describe('Person Class', function () {
         })
 
         it("should update the person instance's name and age with the passed in object values", function(){
-            const newYou = {name: "Lulu", age: 28};
             bill.update(newYou);
             expect(bill.name).to.equal("Lulu");
             expect(bill.age).to.equal(28);
         })
 
         it("should throw and TypeError with a specific message is an object without an age AND name key are passed in", function() {
-            const newWho = {name: "Tifa", cupsize: "G"};
             failContext = () => bill.update(newWho);
             expect(failContext).to.throw(TypeError, 'name AND age please...');
+        })
+    })
+
+    describe('tryUpdate(obj) instance method', function() {
+        it('should call update(obj)', function() {
+            chai.spy.on(bill, 'update');
+            bill.tryUpdate(newYou);
+            expect(bill.update).to.have.been.called(1);
+        })
+        it('should return true if it successfully calls update(obj', function () {
+            expect(bill.tryUpdate(newYou)).to.equal(true);
+        })
+        it('should NOT throw an error if update(obj) is not successful', function () {
+            expect(bill.tryUpdate(newWho)).to.not.throw;
+        })
+        it('should return false if update(obj) is not successful', function () {
+            expect(bill.tryUpdate(newWho)).to.equal(false);
         })
     })
 
